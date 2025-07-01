@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://learnedge-tmvu.onrender.com/"
+export const BACKEND_URL = "https://learnedge-tmvu.onrender.com/api/v1"
