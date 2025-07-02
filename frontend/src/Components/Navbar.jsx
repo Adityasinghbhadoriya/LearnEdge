@@ -27,7 +27,7 @@ function Navbar() {
       withCredentials: true,
     });
 
-    toast.success(response.data.message);
+    toast.success("Logged Out Successfully");
 
     // Clear localStorage and update state
     localStorage.removeItem("user");
@@ -37,14 +37,8 @@ function Navbar() {
     navigate("/login");
 
   } catch (error) {
-    if (error.response && error.response.status === 401) {
-      // Already logged out, treat as success
-      toast.success("You are already logged out.");
-    }
     console.log("Error in logging out", error);
     toast.error(
-      error?.response?.data?.message ||
-      error?.response?.data?.errors ||
       error?.response?.data?.error ||
       "Error in logging out"
     );
