@@ -38,7 +38,7 @@ function Navbar() {
 
   } catch (error) {
     console.log("Error in logging out", error);
-    toast.error(
+    toast.success(
       "Logged Out Successfully"
     );
     localStorage.removeItem("user");
