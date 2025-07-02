@@ -18,7 +18,8 @@ app.use(express.json());
 app.use(cookieParser());
 const allowedOrigins = [
   "https://learn-edge.vercel.app",
-  "https://learn-edge-kvygdge2x-aditya-singh-bhadoriyas-projects.vercel.app"
+  "https://learn-edge-kvygdge2x-aditya-singh-bhadoriyas-projects.vercel.app",
+  "https://learn-edge-git-main-aditya-singh-bhadoriyas-projects.vercel.app"
 ];
 
 app.use(cors({
@@ -26,6 +27,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log("Blocked origin:", origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
@@ -33,7 +35,6 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
-
 
 app.use(fileUpload({
     useTempFiles : true,
