@@ -7,7 +7,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { BACKEND_URL } from '../../utils/utils';
 
 function Buy() {
-  const {courseId} = useParams()
+  const { courseId } = useParams()
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate()
@@ -15,47 +15,51 @@ function Buy() {
   const [clientSecret, setClientSecret] = useState("");
   const [error, setError] = useState("");
 
-  const user = JSON.parse(localStorage.getItem("user"))
-  const token= user.token
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const token = user?.token;
+
 
   const stripe = useStripe();
   const elements = useElements();
 
   const [cardError, setCardError] = useState("")
 
-  useEffect(()=>{
-    const fetchBuyCourseData=async ()=>{
+  useEffect(() => {
+    const fetchBuyCourseData = async () => {
 
-    if(!token){
-      setError("Please login to purchase the courses")
-      return
-    }  
-    try {
-      
-      const response =await axios.post(`${BACKEND_URL}/course/buy/${courseId}`,{},{
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        withCredentials: true
-      })
-      console.log(response.data)
-      setCourse(response.data.course)
-      setClientSecret(response.data.clientSecret)
-      setLoading(false) 
-    } catch (error) {
-      setLoading(false)
-      if(error.response?.status===400){
-        setError("You have already purchased this course")
-        navigate("/purchases")
-      }else{
-        setError(error?.response?.data?.errors)
+      if (!token) {
+        toast.error("Please login to purchase the course");
+        navigate("/login", { replace: true });
+        return;
+
+      }
+      try {
+
+        const response = await axios.post(`${BACKEND_URL}/course/buy/${courseId}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          withCredentials: true
+        })
+        console.log(response.data)
+        setCourse(response.data.course)
+        setClientSecret(response.data.clientSecret)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        if (error.response?.status === 400) {
+          setError("You have already purchased this course")
+          navigate("/purchases")
+        } else {
+          setError(error?.response?.data?.errors)
+        }
       }
     }
-  }
-  fetchBuyCourseData();
-  },[courseId])
+    fetchBuyCourseData();
+  }, [courseId])
 
-  const handlePurchase = async(event)=>{
+  const handlePurchase = async (event) => {
 
     event.preventDefault();
 
@@ -74,7 +78,7 @@ function Buy() {
     }
 
     // Use your card Element with other Stripe.js APIs
-    const {error, paymentMethod} = await stripe.createPaymentMethod({
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card,
     });
@@ -86,55 +90,55 @@ function Buy() {
     } else {
       console.log('Payment Method Created!', paymentMethod);
     }
-    if(!clientSecret){
+    if (!clientSecret) {
       console.log("No ClientSecret Found");
       setLoading(false)
       return;
     }
-    const {paymentIntent, error:confirmError} = await stripe.confirmCardPayment(
-  clientSecret,
-  {
-    payment_method: {
-      card: card,
-      billing_details: {
-        name: user?.user?.firstName,
-        email: user?.user?.email,
+    const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
+      clientSecret,
+      {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: user?.user?.firstName,
+            email: user?.user?.email,
+          },
+        },
       },
-    },
-  },
-);
-  if(confirmError){
-    setCardError(confirmError.message)
-  }else if(paymentIntent.status=== "succeeded"){
-    console.log("Payment Succeeded: ", paymentIntent)
-    setCardError("Your Payment id: ", paymentIntent.id)
-    const paymentInfo = {
-      email: user?.user?.email,
-      userId: user.user._id,
-      courseId: courseId,
-      payemntId: paymentIntent.id,
-      amount:paymentIntent.amount,
-      status: paymentIntent.status
-    }
-    console.log("Payment info: ", paymentInfo)
-    await axios.post(`${BACKEND_URL}/order`, paymentInfo, {
-      headers: {
+    );
+    if (confirmError) {
+      setCardError(confirmError.message)
+    } else if (paymentIntent.status === "succeeded") {
+      console.log("Payment Succeeded: ", paymentIntent)
+      setCardError("Your Payment id: ", paymentIntent.id)
+      const paymentInfo = {
+        email: user?.user?.email,
+        userId: user.user._id,
+        courseId: courseId,
+        payemntId: paymentIntent.id,
+        amount: paymentIntent.amount,
+        status: paymentIntent.status
+      }
+      console.log("Payment info: ", paymentInfo)
+      await axios.post(`${BACKEND_URL}/order`, paymentInfo, {
+        headers: {
           Authorization: `Bearer ${token}`
         },
         withCredentials: true
-    })
-    .then(response => {
-      console.log(response.data)
-    }).catch((error)=>{
-      console.log(error)
-      toast.error("Error in making payment")
-    })
-    
-    toast.success("Payment Successfull")
-    navigate("/purchases")
+      })
+        .then(response => {
+          console.log(response.data)
+        }).catch((error) => {
+          console.log(error)
+          toast.error("Error in making payment")
+        })
+
+      toast.success("Payment Successfull")
+      navigate("/purchases")
+    }
+    setLoading(false)
   }
-  setLoading(false)
-}
 
   return (
     <>
@@ -215,7 +219,7 @@ function Buy() {
           </div>
         </div>
       )}
-    
+
     </>
   )
 }
