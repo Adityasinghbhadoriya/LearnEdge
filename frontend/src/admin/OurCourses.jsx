@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from '../../utils/utils';
 
 
 function OurCourses() {
@@ -26,7 +27,7 @@ function OurCourses() {
          }
         const fetchCourses = async () => {
             try {
-                const response = await axios.get("http://localhost:4001/api/v1/course/courses", {
+                const response = await axios.get(`${BACKEND_URL}/course/courses`, {
                     withCredentials: true,
                 });
                 setCourses(response.data.courses);
@@ -45,7 +46,7 @@ function OurCourses() {
     const handleDeleteCourse = async(id) =>{
         try {
             const response =await axios.delete(
-              `http://localhost:4001/api/v1/course/delete/${id}`,{
+              `${BACKEND_URL}/course/delete/${id}`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

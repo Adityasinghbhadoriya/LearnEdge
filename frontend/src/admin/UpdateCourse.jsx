@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios"
 import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../../utils/utils';
 
 function UpdateCourse() {
 
@@ -17,7 +18,7 @@ function UpdateCourse() {
     useEffect(()=>{
       const fetchCoursesData =async ()=>{
           try {
-            const {data} = await axios.get(`http://localhost:4001/api/v1/course/${id}`,{
+            const {data} = await axios.get(`${BACKEND_URL}/course/${id}`,{
               withCredentials:true,
             })  
             console.log(data)
@@ -64,7 +65,7 @@ function UpdateCourse() {
        }
 
        try {
-        const response =await axios.put(`http://localhost:4001/api/v1/course/update/${id}`,formData,{
+        const response =await axios.put(`${BACKEND_URL}/course/update/${id}`,formData,{
             headers:{
                 Authorization: `Bearer ${token}`
             },

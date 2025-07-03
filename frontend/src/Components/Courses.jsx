@@ -46,19 +46,29 @@ function Courses() {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/admin/logout`, {
-        withCredentials: true,
-      });
-      toast.success(response.data.message);
-      localStorage.removeItem("user");
-      setIsLoggedIn(false);
-      navigate("/login");
-    } catch (error) {
-      console.error("Error in logging out", error);
-      toast.error(error?.response?.data?.errors || "Error in logging out");
-    }
-  };
+  try {
+    const response = await axios.get(`${BACKEND_URL}/admin/logout`, {
+      withCredentials: true,
+    });
+
+    toast.success("Logged Out Successfully");
+
+    // Clear localStorage and update state
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+
+    // Redirect to login page
+    navigate("/login");
+
+  } catch (error) {
+    console.log("Error in logging out", error);
+    toast.success(
+      "Logged Out Successfully"
+    );
+    localStorage.removeItem("user");
+     setIsLoggedIn(false);
+  }
+};
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -104,11 +114,11 @@ function Courses() {
             </li>
             <li>
               {isLoggedIn ? (
-                <button onClick={handleLogout} className="flex items-center">
+                <button onClick={handleLogout} className="flex items-center cursor-pointer">
                   <IoLogOut className="mr-2" /> Logout
                 </button>
               ) : (
-                <Link to="/login" className="flex items-center">
+                <Link to="/login" className="flex items-center cursor-pointer">
                   <IoLogIn className="mr-2" /> Login
                 </Link>
               )}

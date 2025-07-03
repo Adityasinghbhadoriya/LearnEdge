@@ -3,6 +3,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { BACKEND_URL } from '../../utils/utils'
 
 function CreateCourse() {
     const [title, setTitle] = useState("")
@@ -38,7 +39,7 @@ function CreateCourse() {
        }
 
        try {
-        const response =await axios.post("http://localhost:4001/api/v1/course/create",formData,{
+        const response =await axios.post(`${BACKEND_URL}/course/create`,formData,{
             headers:{
                 Authorization: `Bearer ${token}`
             },

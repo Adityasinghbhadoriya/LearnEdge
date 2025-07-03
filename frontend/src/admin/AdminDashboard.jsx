@@ -2,33 +2,31 @@ import axios from 'axios';
 import React from 'react'
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom'
+import { BACKEND_URL } from '../../utils/utils';
 
 function AdminDashboard() {
-      const handleLogout = async () => {
+  const handleLogout = async () => {
   try {
-    const response = await axios.get("http://localhost:4001/api/v1/admin/logout", {
+    const response = await axios.get(`${BACKEND_URL}/admin/logout`, {
       withCredentials: true,
     });
 
-    toast.success(response.data.message);
+    toast.success("Logged Out Successfully");
 
     // Clear localStorage and update state
     localStorage.removeItem("admin");
+    setIsLoggedIn(false);
+
+    // Redirect to login page
+    navigate("/admin/login");
 
   } catch (error) {
-    if (error.response && error.response.status === 401) {
-      // Already logged out, treat as success
-      toast.success("You are already logged out.");
-    }
     console.log("Error in logging out", error);
     toast.error(
-      error?.response?.data?.message ||
-      error?.response?.data?.errors ||
-      error?.response?.data?.error ||
       "Error in logging out"
     );
-    localStorage.removeItem("user");
-    
+    localStorage.removeItem("admin");
+     setIsLoggedIn(false);
   }
 };
 

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Navbar from '../Components/Navbar';
+import { BACKEND_URL } from '../../utils/utils';
 
 function AdminSignup() {
 
@@ -19,7 +20,7 @@ function AdminSignup() {
     e.preventDefault();
     
     try {
-        const response = await axios.post("http://localhost:4001/api/v1/admin/signup",{
+        const response = await axios.post(`${BACKEND_URL}/admin/signup`,{
         firstName,
         lastName,
         email,
