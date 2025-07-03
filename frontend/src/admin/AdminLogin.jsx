@@ -42,7 +42,6 @@ function AdminLogin() {
 
   return (
   <>
-      <Navbar/>
     <div className='relative overflow-hidden flex items-center justify-center  pb-10 h-screen w-full '>
       {/* Background Circles (optional responsive hides) */}
       {/* Background Circles */}
@@ -54,7 +53,7 @@ function AdminLogin() {
         <div className="absolute w-16 h-16 bg-yellow-400 rounded-full bottom-[30%] right-[20%] hidden sm:block"></div>
         <div className="absolute w-20 h-20 bg-sky-400 rounded-full top-[20%] right-[-3%] hidden sm:block"></div>
         <div className='w-110 h-100 rounded-3xl bg-white'>
-          <h1 className='font-bold text-3xl text-center p-4'>Welcome to <span className='text-blue-500'>LearnEdge</span></h1>
+          <h1 className='font-bold text-3xl text-center p-4'>Welcome to <Link to={"/"} className='text-blue-500  hover:text-blue-400  cursor-pointer'>LearnEdge</Link></h1>
           <h1 className='text-center'>Just Login To Join Us!</h1>
           <form className='mt-9' onSubmit={handleSubmit}>
 
@@ -78,6 +77,7 @@ function AdminLogin() {
         <div className="text-red-500 text-center mt-4">{errorMessage}</div>
       )}
           <button type='submit' className='w-90 px-4 py-3  mt-5 ml-10 rounded-xl bg-blue-500 text-white font-bold text-[18px] hover:scale-105 duration-300 hover:bg-blue-400 cursor-pointer'>Login</button>
+          <div className='text-center p-3'>Don't have an account? <Link to={"/admin/signup"} className='text-blue-500 hover:text-blue-600' >Signup</Link></div>
           </form>
 
         </div>
