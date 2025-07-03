@@ -41,7 +41,7 @@ function AdminDashboard() {
         <nav className="flex flex-col space-y-4">
           <Link to="/admin/our-courses">
             <button className="w-full bg-green-700 hover:bg-green-600 text-white py-2 rounded">
-              Our Cloths
+              Our Courses
             </button>
           </Link>
           <Link to="/admin/create-course">
