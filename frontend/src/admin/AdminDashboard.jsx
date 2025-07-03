@@ -22,8 +22,8 @@ function AdminDashboard() {
 
   } catch (error) {
     console.log("Error in logging out", error);
-    toast.error(
-      "Error in logging out"
+    toast.success(
+      "Logged Out Successfully"
     );
     localStorage.removeItem("admin");
      setIsLoggedIn(false);
